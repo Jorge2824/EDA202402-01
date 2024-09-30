@@ -127,6 +127,41 @@ public class InventarioDigital {
         System.out.println("Producto ingresado con éxito.");
     }
 
+    // Método para registrar salida de un producto
+    private static void registrarSalida() {
+        System.out.print("Ingrese el código del producto que desea retirar: ");
+        String codigoProducto = scanner.nextLine();
+
+        int indiceEncontrado = encuentraIndice(codigoProducto);
+
+        System.out.print("Ingrese la cantidad a retirar: ");
+        int cantidadRetirada = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Ingrese la fecha de salida (dd/MM/yyyy): ");
+        String fechaSalida = scanner.nextLine();
+
+        if (contadorMovimientos == movimientos.length) {
+            redimensionarMovimientos();
+        }
+        String precioAnterior = String.valueOf(preciosUnitario[indiceEncontrado]);
+        movimientos[contadorMovimientos][0] = codigoProducto;
+        movimientos[contadorMovimientos][1] = nombresProducto[indiceEncontrado];
+        movimientos[contadorMovimientos][2] = String.valueOf(cantidadRetirada);
+        movimientos[contadorMovimientos][3] = precioAnterior; // Precio no aplicable en salida
+        movimientos[contadorMovimientos][4] = "Salida";
+        movimientos[contadorMovimientos][5] = fechaSalida;
+        contadorMovimientos++;
+
+        // Kardex Operativa Salidas
+        double montoTotalAnterior = cantidadesProducto[indiceEncontrado] * preciosUnitario[indiceEncontrado];
+        double montoFinal = montoTotalAnterior - (cantidadRetirada * preciosUnitario[indiceEncontrado]);
+        cantidadesProducto[indiceEncontrado] -= cantidadRetirada;
+        preciosUnitario[indiceEncontrado] = redondearDecimales(
+                montoFinal / cantidadesProducto[indiceEncontrado]);
+        System.out.println("Salida registrada con éxito. Sale con el precio S/ " + precioAnterior);
+    }
+
     public static void main(String[] args) {
         boolean continuar = true;
         while (continuar) {
@@ -140,6 +175,7 @@ public class InventarioDigital {
                 case 2:
                     break;
                 case 3:
+                    registrarSalida();
                     break;
                 case 4:
                     break;
