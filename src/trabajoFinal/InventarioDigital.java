@@ -171,6 +171,26 @@ public class InventarioDigital {
         System.out.println("Salida registrada con éxito. Sale con el precio S/ " + precioAnterior);
     }
 
+    // Método para mostrar el inventario agrupado por código de producto
+    private static void mostrarInventario() {
+        if (contadorProductos == 0) {
+            System.out.println("El inventario está vacío.");
+            return;
+        }
+
+        System.out.println("\n--- Inventario Actual Agrupado por Código ---");
+        for (int i = 0; i < contadorProductos; i++) {
+            String codigo = codigosProducto[i];
+            String nombre = nombresProducto[i];
+            String cantidadTotal = String.valueOf(cantidadesProducto[i]);
+            String precioTotal = String.valueOf(preciosUnitario[i]);
+            String montoTotal =  String.valueOf(
+                    redondearDecimales(cantidadesProducto[i] * preciosUnitario[i]));
+            System.out.println("Código: " + codigo + ", Nombre: " + nombre + ", Cantidad: " +
+                    cantidadTotal + ", Precio Unitario: S/" + precioTotal + ", Monto Total: S/" + montoTotal);
+        }
+    }
+
     public static void main(String[] args) {
         boolean continuar = true;
         while (continuar) {
@@ -182,6 +202,7 @@ public class InventarioDigital {
                     agregarProducto();
                     break;
                 case 2:
+                    mostrarInventario();
                     break;
                 case 3:
                     registrarSalida();
