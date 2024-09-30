@@ -1,6 +1,8 @@
 package trabajoFinal;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class InventarioDigital {
@@ -191,7 +193,30 @@ public class InventarioDigital {
         }
     }
 
-    public static void main(String[] args) {
+    // Método para mostrar movimientos por rango de fechas
+    private static void mostrarMovimientosPorFecha() throws ParseException {
+        System.out.print("Ingrese la fecha de inicio (dd/MM/yyyy): ");
+        String fechaInicioStr = scanner.nextLine();
+        Date fechaInicio = formatoFecha.parse(fechaInicioStr);
+
+        System.out.print("Ingrese la fecha de fin (dd/MM/yyyy): ");
+        String fechaFinStr = scanner.nextLine();
+        Date fechaFin = formatoFecha.parse(fechaFinStr);
+
+        System.out.println("\n--- Movimientos por rango de fechas ---");
+        for (int i = 0; i < contadorMovimientos; i++) {
+            Date fechaMovimiento = formatoFecha.parse(movimientos[i][5]);
+            if ((fechaMovimiento.equals(fechaInicio) || fechaMovimiento.after(fechaInicio)) &&
+                    (fechaMovimiento.equals(fechaFin) || fechaMovimiento.before(fechaFin))) {
+                System.out.println(movimientos[i][4] +
+                        " - Código: " + movimientos[i][0] + ", Nombre: " + movimientos[i][1] +
+                        ", Cantidad: " + movimientos[i][2] + ", Precio Unitario: " + movimientos[i][3] +
+                        ", Monto Total: " + movimientos[i][4] + ", Fecha: " + movimientos[i][5]);
+            }
+        }
+    }
+
+    public static void main(String[] args) throws ParseException {
         boolean continuar = true;
         while (continuar) {
             mostrarMenu();
@@ -208,6 +233,7 @@ public class InventarioDigital {
                     registrarSalida();
                     break;
                 case 4:
+                    mostrarMovimientosPorFecha();
                     break;
                 case 5:
                     continuar = false;
