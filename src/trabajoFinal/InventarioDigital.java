@@ -133,10 +133,19 @@ public class InventarioDigital {
         String codigoProducto = scanner.nextLine();
 
         int indiceEncontrado = encuentraIndice(codigoProducto);
+        if (indiceEncontrado == -1) {
+            System.out.println("Producto no encontrado en el inventario.");
+            return;
+        }
+        int cantidadDisponible = cantidadesProducto[indiceEncontrado];
 
         System.out.print("Ingrese la cantidad a retirar: ");
         int cantidadRetirada = scanner.nextInt();
         scanner.nextLine();
+        if (cantidadRetirada > cantidadDisponible) {
+            System.out.println("Cantidad insuficiente en inventario.");
+            return;
+        }
 
         System.out.print("Ingrese la fecha de salida (dd/MM/yyyy): ");
         String fechaSalida = scanner.nextLine();
